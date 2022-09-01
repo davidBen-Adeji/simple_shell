@@ -18,8 +18,6 @@ int main(int argc, char *argv[], char *envp[])
 	char *buff = NULL;
 	char *arg[25];
 
-	arg[24] = NULL;
-
 	while (argc != 0 && argv != NULL)
 	{
 		pid = fork();
