@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+char *create_buff(void);
+void _execute(char **arg, char **env);
 /**
 * main - simple shell
 * @argc: argument count
@@ -13,8 +15,7 @@
 int main(int argc, char *argv[], char *envp[])
 {
 	pid_t pid;
-	int n = 0;
-	size_t m = 1;
+	int n = 0, k;
 	char *buff = NULL;
 	char *arg[25];
 
@@ -30,7 +31,7 @@ int main(int argc, char *argv[], char *envp[])
 		else if (pid == 0)
 		{
 			printf("Shell ~ ");
-			getline(&buff, &m, stdin);
+			buff = create_buff();
 			arg[n] = strtok(buff, " ");
 
 			while (arg[n] != NULL)
@@ -39,12 +40,45 @@ int main(int argc, char *argv[], char *envp[])
 			n--;
 			arg[n] = strtok(arg[n], "\n");
 
-			if (execve(arg[0], arg, envp) == -1)
-				perror("Error");
+			_execute(arg, envp);
 		}
 		else
-			wait(NULL);
+			wait(&k);
 	}
 
 	return (0);
+}
+
+/**
+* create_buff - function to get user input
+* Return: allocated memory
+*/
+
+char *create_buff(void)
+{
+	size_t m = 10;
+	char *buff = NULL;
+
+	getline(&buff, &m, stdin);
+
+	if (buff == NULL)
+	{
+		perror("Error:");
+		exit(EXIT_FAILURE);
+	}
+
+	return (buff);
+}
+
+/**
+* _execute - function that executes a file
+* @arg: argument
+* @env: environment
+* Return:nothing
+*/
+
+void _execute(char **arg, char **env)
+{
+	if (execve(arg[0], arg, env) == -1)
+		perror("Error");
 }
