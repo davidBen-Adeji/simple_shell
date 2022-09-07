@@ -19,7 +19,7 @@ int main(int argc, char *argv[], char *envp[])
 	int n = 0, k;
 	char *buff = NULL, *dup;
 	char *arg[25];
-	char str[50];
+	char str[250];
 
 	while (argc != 0 && argv != NULL)
 	{
