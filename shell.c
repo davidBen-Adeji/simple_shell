@@ -4,6 +4,7 @@
 
 char *create_buff(void);
 void _execute(char **arg, char **env);
+char *_strcpy(char *dest, char *src);
 /**
 * main - simple shell
 * @argc: argument count
@@ -16,8 +17,9 @@ int main(int argc, char *argv[], char *envp[])
 {
 	pid_t pid;
 	int n = 0, k;
-	char *buff = NULL;
+	char *buff = NULL, *dup;
 	char *arg[25];
+	char str[50];
 
 	while (argc != 0 && argv != NULL)
 	{
@@ -32,7 +34,9 @@ int main(int argc, char *argv[], char *envp[])
 		{
 			printf("Shell ~ ");
 			buff = create_buff();
-			arg[n] = strtok(buff, " ");
+			dup = _strcpy(str, buff);
+			free(buff);
+			arg[n] = strtok(dup, " ");
 
 			while (arg[n] != NULL)
 				arg[++n] = strtok(NULL, " ");
@@ -68,6 +72,23 @@ char *create_buff(void)
 	}
 
 	return (buff);
+}
+
+/**
+* _strcpy - function to copy a string
+* @dest: data type to be copied into
+* @src: string to be copied
+* Return: the copied string
+*/
+
+char *_strcpy(char *dest, char *src)
+{
+	char *temp = dest;
+
+	while (*src)
+		*dest++ = *src++;
+
+	return (temp);
 }
 
 /**
